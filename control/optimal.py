@@ -796,11 +796,14 @@ class OptimalControlProblem():
             initial_guess = self.initial_guess
         else:
             initial_guess = self._process_initial_guess(initial_guess)
-
+       
+        # !!! turtle soup !!!
         # Call ScipPy optimizer
+        ipopt_constraints = self.minimize_kwargs["ipopt_constraints"]
+        self.minimize_kwargs.pop("ipopt_constraints")
         res = sp.optimize.minimize(
             self._cost_function, initial_guess,
-            constraints=self.constraints, **self.minimize_kwargs)
+            constraints=ipopt_constraints, **self.minimize_kwargs)
 
         # Process and return the results
         return OptimalControlResult(
